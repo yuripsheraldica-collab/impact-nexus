@@ -1,4 +1,4 @@
-import { Linkedin, Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Facebook, Instagram, Mail, MapPin } from "lucide-react";
 
 const navColumns = [
   {
@@ -93,20 +93,24 @@ export const Footer = () => {
             <h4 className="font-display font-semibold text-base mb-4">Contato</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
-                <Phone className="h-4 w-4 mt-0.5 text-primary-glow" />
-                <span className="text-primary-foreground/85">(11) 99999-9999</span>
-              </li>
-              <li className="flex items-start gap-3">
                 <Mail className="h-4 w-4 mt-0.5 text-primary-glow" />
                 <a href="mailto:contato@ciprianoayala.com.br" className="text-primary-foreground/85 hover:text-primary-foreground">
                   contato@ciprianoayala.com.br
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 mt-0.5 text-primary-glow" />
-                <span className="text-primary-foreground/85">
-                  Av. Paulista, 1374 — 10º andar<br />Bela Vista, São Paulo — SP
-                </span>
+                <MapPin className="h-4 w-4 mt-0.5 text-primary-glow shrink-0" />
+                <div className="text-primary-foreground/85">
+                  <div className="font-semibold text-primary-foreground">Sorocaba — SP</div>
+                  Av. Pres. Juscelino Kubitscheck de Oliveira, 888<br />Centro — 18035-060
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="h-4 w-4 mt-0.5 text-primary-glow shrink-0" />
+                <div className="text-primary-foreground/85">
+                  <div className="font-semibold text-primary-foreground">Brasília — DF</div>
+                  SHN Quadra 1 Conj. A Bloco F Entrada A, Sala 713<br />Asa Norte — 70701-000
+                </div>
               </li>
             </ul>
           </div>
