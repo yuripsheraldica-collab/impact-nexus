@@ -1,4 +1,5 @@
 import { Handshake, Globe2, BookOpen, Sparkles, MapPin } from "lucide-react";
+import { ComposableMap, Geographies, Geography, Marker, Line } from "react-simple-maps";
 import { useInView } from "@/hooks/useInView";
 
 const items = [
@@ -8,24 +9,21 @@ const items = [
   { icon: Sparkles, title: "Impacto sem fronteiras" },
 ];
 
-// Approximate lat/lng converted to SVG coords on a 1000x500 equirectangular projection
-const points = [
-  { name: "Brasil", lat: -14, lng: -51 },
-  { name: "EUA", lat: 38, lng: -97 },
-  { name: "Portugal", lat: 39, lng: -8 },
-  { name: "Reino Unido", lat: 54, lng: -2 },
-  { name: "Moçambique", lat: -18, lng: 35 },
-  { name: "Angola", lat: -11, lng: 17 },
-  { name: "Japão", lat: 36, lng: 138 },
-  { name: "Austrália", lat: -25, lng: 133 },
+// [longitude, latitude]
+const countries: { name: string; coords: [number, number]; group: "sede" | "mercosul" | "global" }[] = [
+  { name: "Brasil", coords: [-51.92, -14.23], group: "sede" },
+  { name: "Argentina", coords: [-63.62, -38.42], group: "mercosul" },
+  { name: "Uruguai", coords: [-55.77, -32.52], group: "mercosul" },
+  { name: "Paraguai", coords: [-58.44, -23.44], group: "mercosul" },
+  { name: "Bolívia", coords: [-63.59, -16.29], group: "mercosul" },
+  { name: "Venezuela", coords: [-66.59, 6.42], group: "mercosul" },
+  { name: "EUA", coords: [-95.71, 39.0], group: "global" },
+  { name: "Itália", coords: [12.57, 42.5], group: "global" },
+  { name: "Cingapura", coords: [103.82, 1.35], group: "global" },
 ];
 
-const project = (lat: number, lng: number) => ({
-  x: ((lng + 180) / 360) * 1000,
-  y: ((90 - lat) / 180) * 500,
-});
-
-const brasil = project(-14, -51);
+const brasil = countries[0].coords;
+const targets = countries.slice(1);
 
 export const International = () => {
   const { ref, inView } = useInView<HTMLDivElement>();
@@ -44,102 +42,111 @@ export const International = () => {
           </p>
         </div>
 
-        {/* World map */}
         <div
           ref={ref}
           className="relative rounded-3xl bg-card border border-border shadow-[var(--shadow-md)] p-4 md:p-8 overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
-          <svg
-            viewBox="0 0 1000 500"
-            className="w-full h-auto relative"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <radialGradient id="pulseGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
-              </radialGradient>
-              <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.9" />
-              </linearGradient>
-              <pattern id="dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r="1" fill="hsl(var(--primary))" opacity="0.18" />
-              </pattern>
-            </defs>
 
-            {/* Dotted world silhouette via simple landmass paths (stylized) */}
-            <g fill="hsl(var(--primary))" opacity="0.15">
-              {/* Americas */}
-              <path d="M150,90 q40,-20 80,-10 q30,10 40,40 q5,30 -10,60 q-20,40 -10,80 q10,40 -10,70 q-20,30 -50,40 q-30,5 -50,-20 q-20,-30 -10,-70 q10,-40 0,-80 q-10,-40 0,-70 q5,-25 20,-40z" />
-              {/* Europe + Africa */}
-              <path d="M470,80 q40,-15 80,-5 q40,15 50,50 q5,30 -15,55 q-10,15 0,35 q15,30 5,70 q-10,40 -40,70 q-30,30 -55,20 q-25,-10 -30,-50 q-5,-40 5,-80 q5,-30 -10,-55 q-15,-25 -5,-55 q5,-25 15,-55z" />
-              {/* Asia */}
-              <path d="M650,70 q60,-20 130,-10 q70,10 100,50 q20,30 0,70 q-20,30 -60,40 q-40,10 -90,5 q-50,-5 -80,-30 q-30,-25 -25,-60 q5,-35 25,-65z" />
-              {/* Australia */}
-              <path d="M780,330 q40,-10 80,0 q30,10 30,40 q0,30 -30,40 q-40,10 -80,-5 q-25,-15 -20,-40 q5,-25 20,-35z" />
-            </g>
+          <div className="relative">
+            <ComposableMap
+              projectionConfig={{ scale: 155 }}
+              width={980}
+              height={500}
+              style={{ width: "100%", height: "auto" }}
+            >
+              <Geographies geography="/world-110m.json">
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const country = countries.find((c) => c.name === geoNameMap(geo.properties.name));
+                    const highlighted = !!country;
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        style={{
+                          default: {
+                            fill: highlighted
+                              ? country!.group === "sede"
+                                ? "hsl(var(--accent) / 0.55)"
+                                : country!.group === "mercosul"
+                                ? "hsl(var(--primary) / 0.45)"
+                                : "hsl(var(--primary) / 0.35)"
+                              : "hsl(var(--muted))",
+                            stroke: "hsl(var(--background))",
+                            strokeWidth: 0.5,
+                            outline: "none",
+                            transition: "all 0.3s",
+                          },
+                          hover: {
+                            fill: highlighted ? "hsl(var(--primary))" : "hsl(var(--muted-foreground) / 0.3)",
+                            outline: "none",
+                          },
+                          pressed: { outline: "none" },
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
 
-            {/* Connection arcs from Brasil */}
-            {points
-              .filter((p) => p.name !== "Brasil")
-              .map((p, i) => {
-                const target = project(p.lat, p.lng);
-                const mx = (brasil.x + target.x) / 2;
-                const my = Math.min(brasil.y, target.y) - 80;
-                const d = `M${brasil.x},${brasil.y} Q${mx},${my} ${target.x},${target.y}`;
+              {/* Connection lines */}
+              {targets.map((t, i) => (
+                <Line
+                  key={t.name}
+                  from={brasil}
+                  to={t.coords}
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={1.4}
+                  strokeLinecap="round"
+                  strokeDasharray="500"
+                  style={{
+                    strokeDashoffset: inView ? 0 : 500,
+                    transition: `stroke-dashoffset 1.4s ease-out ${i * 0.12}s`,
+                  }}
+                />
+              ))}
+
+              {/* Markers */}
+              {countries.map((c, i) => {
+                const isHub = c.group === "sede";
                 return (
-                  <path
-                    key={p.name}
-                    d={d}
-                    fill="none"
-                    stroke="url(#arcGrad)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeDasharray="600"
-                    strokeDashoffset={inView ? 0 : 600}
-                    style={{
-                      transition: `stroke-dashoffset 1.6s ease-out ${i * 0.2}s`,
-                    }}
-                  />
+                  <Marker
+                    key={c.name}
+                    coordinates={c.coords}
+                    style={{ opacity: inView ? 1 : 0, transition: `opacity 0.5s ease-out ${0.4 + i * 0.1}s` } as any}
+                  >
+                    <circle
+                      r={isHub ? 9 : 6}
+                      fill={isHub ? "hsl(var(--accent))" : "hsl(var(--primary))"}
+                      stroke="white"
+                      strokeWidth={2}
+                    />
+                    <circle r={isHub ? 9 : 6} fill={isHub ? "hsl(var(--accent))" : "hsl(var(--primary))"} opacity={0.4}>
+                      <animate attributeName="r" values={`${isHub ? 9 : 6};${isHub ? 18 : 14};${isHub ? 9 : 6}`} dur="2.4s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
+                    </circle>
+                    <text
+                      textAnchor="middle"
+                      y={-14}
+                      style={{
+                        fontFamily: "Sora, sans-serif",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        fill: "hsl(var(--primary-deep))",
+                        paintOrder: "stroke",
+                        stroke: "white",
+                        strokeWidth: 3,
+                      } as any}
+                    >
+                      {c.name}
+                    </text>
+                  </Marker>
                 );
               })}
+            </ComposableMap>
+          </div>
 
-            {/* Points */}
-            {points.map((p, i) => {
-              const c = project(p.lat, p.lng);
-              const isHub = p.name === "Brasil";
-              return (
-                <g key={p.name} style={{ opacity: inView ? 1 : 0, transition: `opacity 0.5s ease-out ${0.4 + i * 0.15}s` }}>
-                  <circle cx={c.x} cy={c.y} r={isHub ? 26 : 18} fill="url(#pulseGrad)">
-                    <animate attributeName="r" values={`${isHub ? 18 : 12};${isHub ? 32 : 24};${isHub ? 18 : 12}`} dur="2.4s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.7;0;0.7" dur="2.4s" repeatCount="indefinite" />
-                  </circle>
-                  <circle
-                    cx={c.x}
-                    cy={c.y}
-                    r={isHub ? 7 : 5}
-                    fill={isHub ? "hsl(var(--accent))" : "hsl(var(--primary))"}
-                    stroke="white"
-                    strokeWidth="2"
-                  />
-                  <text
-                    x={c.x + 10}
-                    y={c.y - 8}
-                    fontSize="14"
-                    fontWeight="600"
-                    fill="hsl(var(--primary-deep))"
-                    className="font-display"
-                  >
-                    {p.name}
-                  </text>
-                </g>
-              );
-            })}
-          </svg>
-
-          {/* Legend */}
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-accent ring-2 ring-white shadow-glow" />
@@ -147,15 +154,18 @@ export const International = () => {
             </span>
             <span className="inline-flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-primary ring-2 ring-white" />
-              Parcerias e atuação internacional
+              Mercosul
             </span>
             <span className="inline-flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" /> {points.length} países conectados
+              <span className="h-3 w-3 rounded-full bg-primary/60 ring-2 ring-white" />
+              EUA, Itália e Cingapura
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-primary" /> {countries.length} países conectados
             </span>
           </div>
         </div>
 
-        {/* Pillars */}
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {items.map((it, i) => (
             <div
@@ -174,3 +184,19 @@ export const International = () => {
     </section>
   );
 };
+
+// Map TopoJSON English country names to our PT-BR labels
+function geoNameMap(name: string): string {
+  const map: Record<string, string> = {
+    Brazil: "Brasil",
+    Argentina: "Argentina",
+    Uruguay: "Uruguai",
+    Paraguay: "Paraguai",
+    Bolivia: "Bolívia",
+    Venezuela: "Venezuela",
+    "United States of America": "EUA",
+    Italy: "Itália",
+    Singapore: "Cingapura",
+  };
+  return map[name] ?? name;
+}
