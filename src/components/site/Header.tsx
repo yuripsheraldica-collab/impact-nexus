@@ -32,10 +32,7 @@ export const Header = () => {
     >
       <div className="container-custom flex items-center justify-between h-20">
         <a href="#inicio" className="flex items-center gap-3 group">
-          <div className="relative h-11 w-11 rounded-xl bg-gradient-primary grid place-items-center text-primary-foreground font-display font-bold text-lg shadow-soft transition-transform group-hover:scale-105">
-            GA
-            <span className="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
+          <img src="/logo-gca.svg" alt="Grupo Cipriano Ayala" className="h-11 w-11 transition-transform group-hover:scale-105" />
           <div className="leading-tight">
             <div className="font-display font-bold text-foreground">Grupo</div>
             <div className="font-display font-bold -mt-1 text-primary-deep">Cipriano Ayala</div>
@@ -57,8 +54,8 @@ export const Header = () => {
 
         <div className="hidden lg:block">
           <Button asChild variant="hero" size="lg">
-            <a href="#contato">
-              Fale com um especialista
+            <a href="/portal">
+              Área do Cliente
               <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>
@@ -87,7 +84,7 @@ export const Header = () => {
               </a>
             ))}
             <Button asChild variant="hero" className="mt-2">
-              <a href="#contato">Fale com um especialista</a>
+              <a href="/portal">Área do Cliente</a>
             </Button>
           </div>
         </div>

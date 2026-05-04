@@ -41,8 +41,8 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-xl bg-white/10 backdrop-blur grid place-items-center font-display font-bold">
-                GA
+              <div className="h-12 w-12 rounded-xl bg-white p-1.5 grid place-items-center">
+                <img src="/logo-gca.svg" alt="GCA" className="h-full w-full" />
               </div>
               <div className="leading-tight">
                 <div className="font-display font-bold">Grupo</div>
@@ -53,12 +53,19 @@ export const Footer = () => {
               Ecossistema de soluções estratégicas para gestão pública e terceiro setor, com foco em impacto social e transparência.
             </p>
             <div className="mt-6 flex gap-3">
-              {[Linkedin, Facebook, Instagram, Mail].map((Icon, i) => (
+              {[
+                { Icon: Linkedin, href: "https://www.linkedin.com/company/grupociprianoayala/", label: "LinkedIn" },
+                { Icon: Instagram, href: "https://www.instagram.com/grupociprianoayala/", label: "Instagram" },
+                { Icon: Facebook, href: "https://www.facebook.com/grupociprianoayala", label: "Facebook" },
+                { Icon: Mail, href: "mailto:contato@ciprianoayala.com.br", label: "E-mail" },
+              ].map(({ Icon, href, label }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="h-10 w-10 rounded-lg bg-white/10 hover:bg-white/20 grid place-items-center transition-colors"
-                  aria-label="Social"
+                  aria-label={label}
                 >
                   <Icon className="h-4 w-4" />
                 </a>

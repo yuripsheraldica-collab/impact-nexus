@@ -34,6 +34,13 @@ const units = [
     logo: "/logo-3s.svg",
     description: "Comunicação estratégica para fortalecer marcas e gerar impacto.",
     href: "https://ciprianoayala.com.br/3s-marketing/",
+    accent: "from-purple-500/15 to-purple-500/0",
+  },
+  {
+    name: "Otimistas",
+    logo: "/logo-otimistas.svg",
+    description: "Atuação estratégica em Brasília para captação de recursos, articulação institucional e network de alto nível.",
+    href: "#contato",
     accent: "from-orange-500/15 to-orange-500/0",
   },
 ];
