@@ -127,27 +127,26 @@
 }
 
 /* Little Cip animations */
-@keyframes cip-wave {
-  0%, 100% { transform: rotate(-3deg) scale(1); }
-  50% { transform: rotate(3deg) scale(1.03); }
-}
-@keyframes cip-talk {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
 @keyframes cip-entry {
   0% { opacity: 0; transform: translateY(40px) scale(0.9); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-.cip-idle {
-  animation: cip-wave 3.6s ease-in-out infinite;
-  transform-origin: 50% 90%;
+@keyframes cip-breath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
 }
-.cip-talking {
-  animation: cip-talk 0.55s ease-in-out infinite;
-  transform-origin: 50% 90%;
-  filter: drop-shadow(0 0 18px hsl(var(--primary) / 0.55));
+@keyframes cip-speaking-pulse {
+  0%, 100% { filter: drop-shadow(0 0 14px hsl(var(--primary) / 0.45)); }
+  50% { filter: drop-shadow(0 0 24px hsl(var(--primary) / 0.7)); }
 }
-.cip-entry {
-  animation: cip-entry 0.8s var(--ease-out) both;
+@keyframes cip-wave-hand {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-20deg); }
+  50%  { transform: rotate(10deg); }
+  75%  { transform: rotate(-20deg); }
+  100% { transform: rotate(0deg); }
 }
+.cip-entry { animation: cip-entry 0.8s var(--ease-out) both; }
+.cip-breath { animation: cip-breath 4s ease-in-out infinite; transform-origin: 50% 90%; }
+.cip-speaking { animation: cip-breath 4s ease-in-out infinite, cip-speaking-pulse 0.6s ease-in-out infinite; }
+.cip-wave-hand { animation: cip-wave-hand 1.5s ease-in-out 3; }
