@@ -9,6 +9,7 @@ import { International } from "@/components/site/International";
 import { Testimonials } from "@/components/site/Testimonials";
 import { VideoTestimonials } from "@/components/site/VideoTestimonials";
 import { Footer } from "@/components/site/Footer";
+import { LittleCip } from "@/components/site/LittleCip";
 
 const Index = () => {
   return (
