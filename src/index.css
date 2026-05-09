@@ -125,3 +125,29 @@
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+
+/* Little Cip animations */
+@keyframes cip-wave {
+  0%, 100% { transform: rotate(-3deg) scale(1); }
+  50% { transform: rotate(3deg) scale(1.03); }
+}
+@keyframes cip-talk {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@keyframes cip-entry {
+  0% { opacity: 0; transform: translateY(40px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cip-idle {
+  animation: cip-wave 3.6s ease-in-out infinite;
+  transform-origin: 50% 90%;
+}
+.cip-talking {
+  animation: cip-talk 0.55s ease-in-out infinite;
+  transform-origin: 50% 90%;
+  filter: drop-shadow(0 0 18px hsl(var(--primary) / 0.55));
+}
+.cip-entry {
+  animation: cip-entry 0.8s var(--ease-out) both;
+}
