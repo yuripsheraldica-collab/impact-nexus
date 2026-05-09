@@ -5,57 +5,29 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 const WELCOME_TEXT =
-  "Olá. Seja bem-vindo. Eu sou o Little Cip, seu assistente estratégico inteligente. Estou preparado para analisar oportunidades, gerar insights e acompanhar o crescimento da sua entidade.";
+  "Olá! Eu sou o Little Cip, seu consultor estratégico do Grupo Cipriano Ayala. Que bom te ver por aqui — me conta, no que posso ajudar hoje?";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 export const LittleCip = () => {
   const [muted, setMuted] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [waving, setWaving] = useState(true);
   const [bubble, setBubble] = useState("");
   const [showBubble, setShowBubble] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "Olá! Como posso te ajudar hoje?" },
+    { role: "assistant", content: "Oi! Que bom te ver aqui. Me conta, em que posso te ajudar hoje?" },
   ]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const playedRef = useRef(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Welcome audio + typing bubble
+  // stop wave after 4.5s (3 loops of 1.5s)
   useEffect(() => {
-    if (playedRef.current) return;
-    playedRef.current = true;
-    const t = setTimeout(async () => {
-      const audio = new Audio("/little-cip-welcome.mp3");
-      audio.muted = muted;
-      audioRef.current = audio;
-      audio.addEventListener("ended", () => {
-        setSpeaking(false);
-        setTimeout(() => setShowBubble(false), 600);
-      });
-      try {
-        await audio.play();
-        setSpeaking(true);
-        setShowBubble(true);
-        // typewriter
-        let i = 0;
-        const iv = setInterval(() => {
-          i++;
-          setBubble(WELCOME_TEXT.slice(0, i));
-          if (i >= WELCOME_TEXT.length) clearInterval(iv);
-        }, 35);
-      } catch {
-        // autoplay blocked — show bubble silently
-        setShowBubble(true);
-        setBubble(WELCOME_TEXT);
-        setTimeout(() => setShowBubble(false), 8000);
-      }
-    }, 1500);
+    const t = setTimeout(() => setWaving(false), 4600);
     return () => clearTimeout(t);
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -65,6 +37,41 @@ export const LittleCip = () => {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, sending]);
+
+  const playWelcome = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.muted = muted;
+    audio.play()
+      .then(() => {
+        setSpeaking(true);
+        setShowBubble(true);
+        setBubble("");
+        // typewriter
+        let i = 0;
+        const total = WELCOME_TEXT.length;
+        const duration = Math.max(2500, (audio.duration || 6) * 1000);
+        const step = Math.max(20, duration / total);
+        const iv = setInterval(() => {
+          i++;
+          setBubble(WELCOME_TEXT.slice(0, i));
+          if (i >= total) clearInterval(iv);
+        }, step);
+      })
+      .catch(() => {
+        setShowBubble(true);
+        setBubble(WELCOME_TEXT);
+        setTimeout(() => setShowBubble(false), 8000);
+      });
+  };
+
+  const onCipClick = () => {
+    // Always try to play audio on user gesture
+    playWelcome();
+    // Open chat after short delay so user sees the wave + bubble first
+    setTimeout(() => setChatOpen(true), 400);
+  };
 
   const send = async () => {
     const text = input.trim();
@@ -92,13 +99,23 @@ export const LittleCip = () => {
 
   return (
     <>
+      <audio
+        ref={audioRef}
+        src="/little-cip-welcome.mp3"
+        preload="auto"
+        onEnded={() => {
+          setSpeaking(false);
+          setTimeout(() => setShowBubble(false), 600);
+        }}
+      />
+
       {/* Chat widget */}
       {chatOpen && (
         <div className="fixed z-50 bottom-4 right-4 md:right-[110px] w-[calc(100vw-2rem)] md:w-[360px] h-[70vh] md:h-[500px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
           <div className="flex items-center justify-between px-4 py-3 bg-gradient-primary text-primary-foreground">
             <div>
               <div className="font-display font-bold text-sm">Little Cip</div>
-              <div className="text-[11px] opacity-90">Assistente Estratégico</div>
+              <div className="text-[11px] opacity-90">Consultor Estratégico</div>
             </div>
             <button onClick={() => setChatOpen(false)} aria-label="Fechar" className="p-1 hover:bg-white/10 rounded">
               <X className="h-4 w-4" />
@@ -109,7 +126,7 @@ export const LittleCip = () => {
               <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
                 <div
                   className={cn(
-                    "max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed",
+                    "max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap",
                     m.role === "user"
                       ? "bg-primary text-primary-foreground rounded-br-sm"
                       : "bg-card border border-border rounded-bl-sm"
@@ -155,7 +172,6 @@ export const LittleCip = () => {
 
       {/* Floating Little Cip */}
       <div className="fixed z-50 bottom-2 right-2 md:bottom-4 md:right-4 flex flex-col items-end gap-2 select-none">
-        {/* Speech bubble */}
         {showBubble && !chatOpen && (
           <div className="relative max-w-[260px] md:max-w-[300px] mr-4 mb-1 bg-card border border-border shadow-lg rounded-2xl px-4 py-3 text-sm text-foreground animate-fade-in">
             {bubble}
@@ -165,29 +181,44 @@ export const LittleCip = () => {
 
         <div className="relative">
           <button
-            onClick={() => setChatOpen((v) => !v)}
-            aria-label="Abrir chat com Little Cip"
+            onClick={onCipClick}
+            aria-label="Falar com Little Cip"
             className={cn(
               "relative block transition-[width,height] duration-300 cip-entry",
               sizeClasses
             )}
           >
-            {/* Glow when speaking */}
             {speaking && (
               <span className="absolute inset-0 rounded-full bg-primary/30 blur-2xl animate-pulse pointer-events-none" />
             )}
-            <img
-              src={littleCipImg}
-              alt="Little Cip — Assistente"
-              className={cn(
-                "relative w-full h-full object-contain drop-shadow-xl",
-                speaking ? "cip-talking" : "cip-idle"
+            <div className={cn("relative w-full h-full", "cip-breath", speaking && "cip-speaking")}>
+              <img
+                src={littleCipImg}
+                alt="Little Cip — Assistente"
+                className="relative w-full h-full object-contain drop-shadow-xl"
+                draggable={false}
+              />
+              {/* Wave hand overlay — sits over the right hand area */}
+              {waving && (
+                <span
+                  aria-hidden
+                  className="absolute pointer-events-none cip-wave-hand"
+                  style={{
+                    right: "8%",
+                    top: "38%",
+                    width: "26%",
+                    height: "26%",
+                    backgroundImage: `url(${littleCipImg})`,
+                    backgroundSize: "360% 360%",
+                    backgroundPosition: "78% 48%",
+                    backgroundRepeat: "no-repeat",
+                    transformOrigin: "30% 80%",
+                  }}
+                />
               )}
-              draggable={false}
-            />
+            </div>
           </button>
 
-          {/* Mute button */}
           {!chatOpen && (
             <button
               onClick={(e) => {
