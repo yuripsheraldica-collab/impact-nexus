@@ -42,7 +42,7 @@ export const Platform = () => {
             <img src={dashboard} alt="Dashboard" className="w-full h-56 object-cover" loading="lazy" />
           </div>
           <Button asChild variant="soft" className="mt-6">
-            <a href="/portal?view=dashboard">
+            <a href="/portal">
               Saiba mais <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>
@@ -71,7 +71,7 @@ export const Platform = () => {
             <img src={clientArea} alt="Área do cliente" className="w-full h-56 object-cover" loading="lazy" />
           </div>
           <Button asChild variant="hero" className="mt-6">
-            <a href="/portal?view=cliente">
+            <a href="/portal">
               Acessar minha área <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>
