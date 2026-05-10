@@ -63,7 +63,7 @@ const Portal = () => {
               ))}
             </ul>
             <Button asChild variant="hero" size="xl" className="mt-8 w-full sm:w-auto">
-              <a href="https://ciprianoayala.com.br" target="_blank" rel="noopener noreferrer">
+              <a href="https://yuripsheraldica-collab.github.io/portal-gca/" target="_blank" rel="noopener noreferrer">
                 Acessar Dashboard <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>
