@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX, X, Send } from "lucide-react";
 import littleCipImg from "@/assets/little-cip.png";
+import littleCipBody from "@/assets/little-cip-body.png";
+import littleCipArm from "@/assets/little-cip-arm.png";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -191,11 +193,21 @@ export const LittleCip = () => {
             {speaking && (
               <span className="absolute inset-0 rounded-full bg-primary/30 blur-2xl animate-pulse pointer-events-none" />
             )}
-            <div className={cn("relative w-full h-full", waving ? "cip-wave" : "cip-breath", speaking && "cip-speaking")}>
+            <div className={cn("relative w-full h-full", "cip-breath", speaking && "cip-speaking")}>
               <img
-                src={littleCipImg}
+                src={littleCipBody}
                 alt="Little Cip — Assistente"
-                className="relative w-full h-full object-contain drop-shadow-xl"
+                className="absolute inset-0 w-full h-full object-contain drop-shadow-xl"
+                draggable={false}
+              />
+              <img
+                src={littleCipArm}
+                alt=""
+                aria-hidden
+                className={cn(
+                  "absolute inset-0 w-full h-full object-contain pointer-events-none",
+                  waving && "cip-arm-wave"
+                )}
                 draggable={false}
               />
             </div>
