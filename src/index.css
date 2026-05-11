@@ -140,14 +140,12 @@
   50% { filter: drop-shadow(0 0 24px hsl(var(--primary) / 0.7)); }
 }
 @keyframes cip-arm-wave {
-  0%   { transform: rotate(0deg); }
-  20%  { transform: rotate(-12deg); }
-  40%  { transform: rotate(10deg); }
-  60%  { transform: rotate(-12deg); }
-  80%  { transform: rotate(8deg); }
-  100% { transform: rotate(0deg); }
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-7deg); }
+  50%      { transform: rotate(0deg); }
+  75%      { transform: rotate(7deg); }
 }
 .cip-entry { animation: cip-entry 0.8s var(--ease-out) both; }
 .cip-breath { animation: cip-breath 4s ease-in-out infinite; transform-origin: 50% 90%; }
 .cip-speaking { animation: cip-breath 4s ease-in-out infinite, cip-speaking-pulse 0.6s ease-in-out infinite; }
-.cip-arm-wave { animation: cip-arm-wave 1.6s ease-in-out infinite; transform-origin: 75% 55%; }
+.cip-arm-wave { animation: cip-arm-wave 1.8s ease-in-out infinite; transform-origin: 80% 55%; }
