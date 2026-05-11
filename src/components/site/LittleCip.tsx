@@ -191,31 +191,13 @@ export const LittleCip = () => {
             {speaking && (
               <span className="absolute inset-0 rounded-full bg-primary/30 blur-2xl animate-pulse pointer-events-none" />
             )}
-            <div className={cn("relative w-full h-full", "cip-breath", speaking && "cip-speaking")}>
+            <div className={cn("relative w-full h-full", waving ? "cip-wave" : "cip-breath", speaking && "cip-speaking")}>
               <img
                 src={littleCipImg}
                 alt="Little Cip — Assistente"
                 className="relative w-full h-full object-contain drop-shadow-xl"
                 draggable={false}
               />
-              {/* Wave hand overlay — sits over the right hand area */}
-              {waving && (
-                <span
-                  aria-hidden
-                  className="absolute pointer-events-none cip-wave-hand"
-                  style={{
-                    right: "8%",
-                    top: "38%",
-                    width: "26%",
-                    height: "26%",
-                    backgroundImage: `url(${littleCipImg})`,
-                    backgroundSize: "360% 360%",
-                    backgroundPosition: "78% 48%",
-                    backgroundRepeat: "no-repeat",
-                    transformOrigin: "30% 80%",
-                  }}
-                />
-              )}
             </div>
           </button>
 
