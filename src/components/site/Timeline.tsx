@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Rocket, TrendingUp, Layers, Award, Globe2 } from "lucide-react";
+import { Rocket, Building2, MapPin, TrendingUp, Award, Layers, Globe2 } from "lucide-react";
 
 const milestones = [
-  { year: "2009", title: "Início da jornada", desc: "Nasce o Cipriano Ayala com foco em gestão pública.", icon: Rocket },
-  { year: "2014", title: "Expansão de atuação", desc: "Novas soluções e a criação do INFIS em inteligência fiscal.", icon: TrendingUp },
-  { year: "2018", title: "Ecossistema nasce", desc: "Integramos novas unidades e ampliamos nosso impacto.", icon: Layers },
-  { year: "2022", title: "Reconhecimento", desc: "Cases de sucesso e presença nacional consolidada.", icon: Award },
-  { year: "2024+", title: "Novos horizontes", desc: "Internacionalização e tecnologia a serviço do impacto.", icon: Globe2 },
+  { year: "2016", title: "O início da jornada", desc: "Atuação na Santa Casa de Tietê com captação de recursos, gestão de emendas parlamentares e estruturação de projetos públicos para instituições filantrópicas.", icon: Rocket },
+  { year: "2018", title: "Nascimento da empresa", desc: "Abertura da empresa com serviços especializados para hospitais filantrópicos, focando na execução de projetos financiados por emendas parlamentares federais.", icon: Building2 },
+  { year: "2020", title: "Dedicação integral e mudança para Sorocaba", desc: "Cipriano passa a atuar integralmente como empresário. A mudança para Sorocaba aproxima a empresa dos clientes na Região Metropolitana.", icon: MapPin },
+  { year: "2021", title: "Expansão e autoridade no setor", desc: "Crescimento com participação ativa em eventos da FEHOSP, palestras, cursos e capacitações sobre gestão de recursos públicos no terceiro setor.", icon: TrendingUp },
+  { year: "2024", title: "Consolidação nacional", desc: "Mais de 100 clientes atendidos e R$ 1,5 bilhão em projetos gerenciados. Nova sede própria na Avenida JK, no Centro de Sorocaba.", icon: Award },
+  { year: "2025", title: "Nasce o Grupo Cipriano Ayala", desc: "Ecossistema de empresas e soluções para o terceiro setor: Otimistas, 3S Marketing, Instituto Cataliza, CertSafe e Fundify.", icon: Layers },
+  { year: "2026", title: "Início da internacionalização", desc: "Expansão internacional, levando metodologia, experiência e visão de impacto para além das fronteiras brasileiras.", icon: Globe2 },
 ];
 
 export const Timeline = () => {
