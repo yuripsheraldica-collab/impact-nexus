@@ -2,9 +2,9 @@ import { ArrowUpRight } from "lucide-react";
 
 const units = [
   {
-    name: "INFIS",
+    name: "Escritório de Projetos Sociais [EPS]",
     logo: "/logo-azul.svg",
-    description: "Inteligência fiscal e estratégias para maximizar receitas públicas com eficiência.",
+    description: "Assessoria completa na gestão de recursos públicos, que acompanha o processo desde a elaboração, aprovação, execução e até a prestação de contas.",
     href: "https://ciprianoayala.com.br/eps-nova/",
     accent: "from-blue-500/15 to-blue-500/0",
   },
