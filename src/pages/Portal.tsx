@@ -90,7 +90,7 @@ const Portal = () => {
               ))}
             </ul>
             <Button asChild variant="hero" size="xl" className="mt-8 w-full sm:w-auto">
-              <Link to="/portal">
+              <Link to="/">
                 Acessar Área do Cliente <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
