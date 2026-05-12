@@ -68,7 +68,7 @@ export const Timeline = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-10 md:gap-6">
             {milestones.map((m, i) => {
               const isActive = i <= activeIndex;
               const Icon = m.icon;
