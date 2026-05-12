@@ -40,7 +40,7 @@ const units = [
     name: "Otimistas",
     logo: "/logo-otimistas.svg",
     description: "Atuação estratégica em Brasília para captação de recursos, articulação institucional e network de alto nível.",
-    href: "#contato",
+    href: "/otimistas",
     accent: "from-orange-500/15 to-orange-500/0",
   },
 ];
