@@ -5,35 +5,35 @@ const units = [
     name: "Escritório de Projetos Sociais [EPS]",
     logo: "/logo-azul.svg",
     description: "Assessoria completa na gestão de recursos públicos, que acompanha o processo desde a elaboração, aprovação, execução e até a prestação de contas.",
-    href: "https://ciprianoayala.com.br/eps-nova/",
+    href: "/eps",
     accent: "from-blue-500/15 to-blue-500/0",
   },
   {
     name: "Fundify",
     logo: "/logo-fundify.svg",
     description: "Plataforma de captação de recursos e crowdfunding para projetos de impacto.",
-    href: "https://ciprianoayala.com.br/fundify-2/",
+    href: "/fundify",
     accent: "from-emerald-500/15 to-emerald-500/0",
   },
   {
     name: "Certisafe",
     logo: "/logo-certisafe.svg",
     description: "Certificações ESG e consultoria em compliance e governança institucional.",
-    href: "https://ciprianoayala.com.br/certsafe-2/",
+    href: "/certisafe",
     accent: "from-cyan-500/15 to-cyan-500/0",
   },
   {
     name: "Instituto Cataliza",
     logo: "/logo-cataliza.svg",
     description: "Fomento à educação, pesquisa e inovação social para transformar realidades.",
-    href: "https://ciprianoayala.com.br/instituto-cataliza/",
+    href: "/cataliza",
     accent: "from-violet-500/15 to-violet-500/0",
   },
   {
     name: "3s Marketing",
     logo: "/logo-3s.svg",
     description: "Comunicação estratégica para fortalecer marcas e gerar impacto.",
-    href: "https://ciprianoayala.com.br/3s-marketing/",
+    href: "/3s-marketing",
     accent: "from-purple-500/15 to-purple-500/0",
   },
   {
@@ -71,8 +71,6 @@ export const Solutions = () => {
             <a
               key={u.name}
               href={u.href}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group relative overflow-hidden card-elevated p-6 flex flex-col animate-fade-in"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
