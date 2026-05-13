@@ -71,8 +71,6 @@ export const Solutions = () => {
             <a
               key={u.name}
               href={u.href}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group relative overflow-hidden card-elevated p-6 flex flex-col animate-fade-in"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
